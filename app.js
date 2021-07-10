@@ -66,16 +66,37 @@ const galleryItems = [
 
 
 const refs = {
-  gallery: document.querySelector(".js-gallery"),
+  gallery: document.querySelector("ul.js-gallery"),
   lightbox: document.querySelector(".js-lightbox"),
+  lightboxImage: document.querySelector("img.lightbox__image"),
+  closeLightboxBtn: document.querySelector(".lightbox .lightbox__button"),
 };
 
+console.log(refs.closeLightboxBtn);
 const gallaryItemsElements = galleryItems.map(el => `<li  class="gallery__item"><a class="gallery__link" href=${el.original}><img
       class="gallery__image"
       src=${el.preview}
       data-source=${el.original}
-      alt=${el.description}
+      alt="${el.description}"
     /></a></li>`)
 
+   console.dir(gallaryItemsElements)
 refs.gallery.insertAdjacentHTML('afterbegin', gallaryItemsElements.join(''))
+
+refs.galleryLink = document.querySelector("a .gallery__link")
+
+
+refs.gallery.addEventListener('click', (ev) => {
+  ev.preventDefault();
+  refs.lightbox.classList.add('is-open')
+  refs.lightboxImage.src = ev.target.dataset.source
+  refs.lightboxImage.alt = ev.target.alt
+  console.dir(ev.target.dataset.source)
+})
+
+refs.closeLightboxBtn.addEventListener('click', (ev) => {
+  refs.lightbox.classList.remove('is-open')
+  refs.lightboxImage.src = ''
+  refs.lightboxImage.alt = ''
+})
 
