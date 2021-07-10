@@ -63,3 +63,19 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+
+const refs = {
+  gallery: document.querySelector(".js-gallery"),
+  lightbox: document.querySelector(".js-lightbox"),
+};
+
+const gallaryItemsElements = galleryItems.map(el => `<li  class="gallery__item"><a class="gallery__link" href=${el.original}><img
+      class="gallery__image"
+      src=${el.preview}
+      data-source=${el.original}
+      alt=${el.description}
+    /></a></li>`)
+
+refs.gallery.insertAdjacentHTML('afterbegin', gallaryItemsElements.join(''))
+
