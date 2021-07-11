@@ -89,16 +89,22 @@ refs.gallery.insertAdjacentHTML('afterbegin', galleryItemsElements.join(''));
 const imgArray = [...document.querySelectorAll('.gallery__image')];
 // ================== открытие модалки ======================
 refs.gallery.addEventListener('click', ev => {
-  ev.preventDefault();
-  refs.lightbox.classList.add('is-open');
-  refs.lightboxImage.src = ev.target.dataset.source;
-  refs.lightboxImage.alt = ev.target.alt;
-  refs.closeLightboxBtn.addEventListener('click', closeLightBox);
-  refs.overlay.addEventListener('click', closeLightBox);
-  document.addEventListener('keydown', onGalleryKeyPress);
-  refs.lightboxImage.addEventListener('click', galleryScrollByMouse);
-  // Запись значения индекса текущего выбранного изображения
-  lightboxImageIdx = imgArray.indexOf(ev.target);
+  if (!ev.target.classList.contains('gallery__image')) {
+    // ev.preventDefault();
+    return;
+  } else {
+    ev.preventDefault();
+    refs.lightbox.classList.add('is-open');
+    refs.lightboxImage.src = ev.target.dataset.source;
+    console.log(ev);
+    refs.lightboxImage.alt = ev.target.alt;
+    refs.closeLightboxBtn.addEventListener('click', closeLightBox);
+    refs.overlay.addEventListener('click', closeLightBox);
+    document.addEventListener('keydown', onGalleryKeyPress);
+    refs.lightboxImage.addEventListener('click', galleryScrollByMouse);
+    // Запись значения индекса текущего выбранного изображения
+    lightboxImageIdx = imgArray.indexOf(ev.target);
+  }
 });
 
 function closeLightBox() {
