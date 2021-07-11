@@ -96,7 +96,7 @@ refs.gallery.addEventListener('click', ev => {
   refs.closeLightboxBtn.addEventListener('click', closeLightBox);
   refs.overlay.addEventListener('click', closeLightBox);
   document.addEventListener('keydown', onGalleryKeyPress);
-
+  refs.lightboxImage.addEventListener('click', galleryScrollByMouse);
   // Запись значения индекса текущего выбранного изображения
   lightboxImageIdx = imgArray.indexOf(ev.target);
 });
@@ -108,6 +108,7 @@ function closeLightBox() {
   refs.closeLightboxBtn.removeEventListener('click', closeLightBox);
   refs.overlay.removeEventListener('click', closeLightBox);
   document.removeEventListener('keydown', onGalleryKeyPress);
+  document.removeEventListener('click', galleryScrollByMouse);
 }
 
 function onGalleryKeyPress(ev) {
@@ -115,10 +116,10 @@ function onGalleryKeyPress(ev) {
     closeLightBox();
   }
 
-  galleryScroll(ev);
+  galleryScrollByArrows(ev);
 }
 
-function galleryScroll(ev) {
+function galleryScrollByArrows(ev) {
   if (ev.key === 'ArrowLeft') {
     if (lightboxImageIdx > 0) {
       lightboxImageIdx -= 1;
@@ -129,6 +130,29 @@ function galleryScroll(ev) {
     refs.lightboxImage.alt = galleryItems[lightboxImageIdx].description;
   }
   if (ev.code === 'ArrowRight') {
+    if (lightboxImageIdx < galleryItems.length - 1) {
+      lightboxImageIdx += 1;
+    } else {
+      lightboxImageIdx = 0;
+    }
+    refs.lightboxImage.src = galleryItems[lightboxImageIdx].original;
+    refs.lightboxImage.alt = galleryItems[lightboxImageIdx].description;
+  }
+}
+
+function galleryScrollByMouse(ev) {
+  if (ev.pageX <= document.documentElement.clientWidth * 0.5) {
+    console.log('left side click');
+    if (lightboxImageIdx > 0) {
+      lightboxImageIdx -= 1;
+    } else {
+      lightboxImageIdx = galleryItems.length - 1;
+    }
+    refs.lightboxImage.src = galleryItems[lightboxImageIdx].original;
+    refs.lightboxImage.alt = galleryItems[lightboxImageIdx].description;
+  }
+  if (ev.pageX > document.documentElement.clientWidth * 0.5) {
+    console.log('right side click');
     if (lightboxImageIdx < galleryItems.length - 1) {
       lightboxImageIdx += 1;
     } else {
